@@ -5,6 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+/**
+ * Author: Sebastian Suarez
+ * Date: 18/04/2020
+ * Register page of the website
+ **/
 namespace Assignment1_WEB {
     public partial class Register : System.Web.UI.Page {
         protected void Page_Load(object sender, EventArgs e) {
@@ -16,11 +21,18 @@ namespace Assignment1_WEB {
             string userName = txtFirstName.Text;
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
-            
-            bool insertionResult = DBController.registerNewUser(
+            bool insertionResult = false;
+            try {
+                insertionResult = DBController.registerNewUser(
                     userName,
                     email,
                     password);
+            }
+            catch (Exception) {
+                lblErrorMessage.Visible = true;
+                lblErrorMessage.Text = "An error has ocurred";
+                throw;
+            }            
 
             if (insertionResult) {
                 HttpCookie httpCookie = new HttpCookie("logedUser");
